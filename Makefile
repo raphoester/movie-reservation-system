@@ -52,7 +52,7 @@ deadcode: ## Two-pass deadcode: flags dead production code (incl. test-only call
 genservice:
 	go run ./internal/tooling/cmd/genservice \
 		-path=$(CURDIR) \
-		-context=$(context) \
+		-module=$(module) \
 		-feature=$(feature) \
 		-type=$(type)
 

@@ -6,7 +6,7 @@ Go microservice framework with shared infrastructure packages and a code generat
 
 ```
 internal/shared/            Reusable framework packages ("the framework")
-internal/{context}/cmd/{service}/  Individual service entry points
+internal/{module}/cmd/{service}/   Individual service entry points
 internal/tooling/cmd/genservice/   Code generator for new services
 contracts/proto/            Protobuf definitions (versioned: v1, v2) with buf tooling
 contracts/oapi/             OpenAPI specs and generated server code

@@ -103,7 +103,7 @@ The `local` environment is validated by `make testconfig-all` alongside the clou
 ## Generating a new service
 
 ```bash
-make genservice context=<bounded_context> feature=<feature_name> type=<http_api|grpc_api|worker>
+make genservice module=<module> feature=<feature_name> type=<http_api|grpc_api|worker>
 ```
 
 This scaffolds `main.go`, `config.go`, `Dockerfile`, and per-environment YAML configs including `local.yaml`.
@@ -112,7 +112,7 @@ Ports are auto-assigned: `genservice` scans all existing `local.yaml` files and 
 
 ---
 
-## Adding a new database / bounded context
+## Adding a new database / module
 
 1. Add the new database to `internal/tooling/cmd/dbcreator/configs/` for each environment
 2. Add the connection config to `internal/tooling/cmd/migrate/configs/` for each environment

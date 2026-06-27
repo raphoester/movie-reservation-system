@@ -18,8 +18,8 @@ import (
 
 var (
 	path        = flag.String("path", "", "repository path")
-	context     = flag.String("context", "", "context path (required); may be nested, e.g. reservations/seating")
-	featureName = flag.String("feature", "", "feature name — adds a prefix: internal/{context}/cmd/{feature}_{type}/")
+	module      = flag.String("module", "", "module path (required); may be nested, e.g. reservations/seating")
+	featureName = flag.String("feature", "", "feature name — adds a prefix: internal/{module}/cmd/{feature}_{type}/")
 	serviceType = flag.String("type", "", "type (required, must be one of: http_api, grpc_api, worker, job)")
 )
 
@@ -53,7 +53,7 @@ func parseServiceType(s string) (serviceTypeEnum, error) {
 }
 
 func run() error {
-	if *path == "" || *context == "" || *serviceType == "" {
+	if *path == "" || *module == "" || *serviceType == "" {
 		return ErrInvalidParams
 	}
 
@@ -66,15 +66,15 @@ func run() error {
 		return fmt.Errorf("invalid service type %q: %w", *serviceType, err)
 	}
 
-	contextKey := strings.ReplaceAll(*context, "/", "_")
+	moduleKey := strings.ReplaceAll(*module, "/", "_")
 
 	var relativeCmdPath, serviceName string
 	if *featureName != "" {
-		relativeCmdPath = filepath.Join("internal", *context, "cmd", fmt.Sprintf("%s_%s", *featureName, *serviceType))
-		serviceName = fmt.Sprintf("%s_%s_%s", contextKey, *featureName, *serviceType)
+		relativeCmdPath = filepath.Join("internal", *module, "cmd", fmt.Sprintf("%s_%s", *featureName, *serviceType))
+		serviceName = fmt.Sprintf("%s_%s_%s", moduleKey, *featureName, *serviceType)
 	} else {
-		relativeCmdPath = filepath.Join("internal", *context, "cmd", *serviceType)
-		serviceName = fmt.Sprintf("%s_%s", contextKey, *serviceType)
+		relativeCmdPath = filepath.Join("internal", *module, "cmd", *serviceType)
+		serviceName = fmt.Sprintf("%s_%s", moduleKey, *serviceType)
 	}
 	var localPort int
 	if parsedServiceType != ServiceTypeJob {

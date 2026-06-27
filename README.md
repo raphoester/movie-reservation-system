@@ -10,7 +10,7 @@ for movie screenings).
 
 ```
 internal/shared/                   Reusable framework packages (the "x" namespace: xbootstrap, xconfigs, xpg, …)
-internal/{context}/cmd/{service}/  Individual service entry points
+internal/{module}/cmd/{service}/   Individual service entry points
 internal/tooling/cmd/              Developer tooling (genservice, migrate, dbcreator, …)
 contracts/proto|oapi|asyncapi/     Protobuf, OpenAPI and AsyncAPI contracts
 assets/migrations|configs/         Embedded SQL migrations and shared config anchors
@@ -28,7 +28,7 @@ make local-up        # postgres + redis + dbcreator + migrator (Docker), then th
 Generate a new service:
 
 ```bash
-make genservice context=<bounded_context> type=<http_api|grpc_api|worker|job>
+make genservice module=<module> type=<http_api|grpc_api|worker|job>
 ```
 
 ## Documentation

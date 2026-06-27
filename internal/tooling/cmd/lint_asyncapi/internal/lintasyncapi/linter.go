@@ -20,7 +20,7 @@ func (v Violation) String() string {
 }
 
 // Linter validates that every channel address in an AsyncAPI spec tree
-// follows the public.<context>.<event> / private.<context>.<event> convention.
+// follows the public.<module>.<event> / private.<module>.<event> convention.
 type Linter struct {
 	fsys fs.FS
 }

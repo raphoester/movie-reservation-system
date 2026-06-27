@@ -27,11 +27,11 @@ make migrate
 
 ```bash
 # Scaffold a new service (http_api, grpc_api, worker, or job)
-# context may be nested: reservations/seating → internal/{context}/cmd/{type}/
-make genservice context=<context_path> type=<http_api|grpc_api|worker|job>
+# module may be nested: reservations/seating → internal/{module}/cmd/{type}/
+make genservice module=<module_path> type=<http_api|grpc_api|worker|job>
 
-# With an optional feature prefix → internal/{context}/cmd/{feature}_{type}/
-make genservice context=<context_path> feature=<feature_name> type=<http_api|grpc_api|worker|job>
+# With an optional feature prefix → internal/{module}/cmd/{feature}_{type}/
+make genservice module=<module_path> feature=<feature_name> type=<http_api|grpc_api|worker|job>
 ```
 
 See [architecture.md](architecture.md) for what the scaffold produces.
@@ -68,7 +68,7 @@ make testconfig-internal-reservations-cmd-grpc_api
 
 ```bash
 # After editing an oapi.spec.yaml, regenerate server code
-go generate ./contracts/oapi/<context>/<feature>/
+go generate ./contracts/oapi/<module>/<feature>/
 # Example:
 go generate ./contracts/oapi/reservations/seating/
 ```

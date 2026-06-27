@@ -16,24 +16,24 @@ cd contracts/proto && buf lint   # lint only
 
 ## OpenAPI
 
-- **Specs**: `contracts/oapi/{context}/{feature}/oapi.spec.yaml`
-- **Generated code**: `contracts/oapi/{context}/{feature}/{package}/server.gen.go` — never edit
+- **Specs**: `contracts/oapi/{module}/{feature}/oapi.spec.yaml`
+- **Generated code**: `contracts/oapi/{module}/{feature}/{package}/server.gen.go` — never edit
 - Each spec directory contains a `generate.go` and a `cfg.yaml`
 - Uses `oapi-codegen` with `std-http-server`, `models`, and `strict-server` generation
 
 **Usage in handlers**: The generated types (request/response models) are used directly. The generated `ServerInterface` is **not** used for routing — routes are registered manually via `http.ServeMux` with `xhttpsrv.Handle()`.
 
 ```bash
-go generate ./contracts/oapi/<context>/<feature>/
+go generate ./contracts/oapi/<module>/<feature>/
 ```
 
 ## AsyncAPI
 
-- **Specs**: `contracts/asyncapi/{public|private}/{context}/asyncapi.yaml`
+- **Specs**: `contracts/asyncapi/{public|private}/{module}/asyncapi.yaml`
   - `public/` — integration events shared with other teams and languages
   - `private/` — internal events, not for external consumption
   - Both support arbitrary nesting: `public/reservations/seating/asyncapi.yaml` is valid
-- **Generated code**: `contracts/asyncapi/{public|private}/{context}/{public|private}_{context}_events/asyncapi.gen.go` — never edit
+- **Generated code**: `contracts/asyncapi/{public|private}/{module}/{public|private}_{module}_events/asyncapi.gen.go` — never edit
 - **Tooling**: `asyncapi-codegen` (`github.com/lerenn/asyncapi-codegen`), install via `make setup-tools`
 - **Format**: AsyncAPI 3.0.0
 - Code generation produces **types only** (`-g types`); broker wiring uses native Watermill patterns via `xmessaging`
@@ -45,12 +45,12 @@ go generate ./contracts/asyncapi/public/reservations/  # regenerate one spec
 
 ### Topic Naming Convention
 
-Enforced by `make lint-asyncapi` (runs in pre-commit). Segments are dot-separated; context and event-name use kebab-case.
+Enforced by `make lint-asyncapi` (runs in pre-commit). Segments are dot-separated; module and event-name use kebab-case.
 
 | Type    | Pattern                             | Example                                          |
 |---------|-------------------------------------|--------------------------------------------------|
-| Public  | `public.<context>.<event-name>`     | `public.reservations.reservation-confirmed`      |
-| Private | `private.<context>.<event-name>`    | `private.reservations.seat-held`                 |
+| Public  | `public.<module>.<event-name>`      | `public.reservations.reservation-confirmed`      |
+| Private | `private.<module>.<event-name>`     | `private.reservations.seat-held`                 |
 
 ### Using Generated Types in Application Code
 

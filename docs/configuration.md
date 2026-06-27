@@ -5,7 +5,7 @@
 - **Shared anchors** live in `assets/configs/` (embedded into binaries via `embed.FS`):
   - `base.yaml` — environment-independent anchors (server port defaults)
   - `{env}.yaml` — environment-specific anchors (logger level, postgres defaults)
-- **Service configs** live in `internal/{context}/cmd/{service}/configs/{env}.yaml`
+- **Service configs** live in `internal/{module}/cmd/{service}/configs/{env}.yaml`
 
 At load time the loader concatenates shared YAML (base + env) with the service YAML, so anchors defined in shared files resolve in service files. Shared keys are prefixed with `_` (e.g. `_logger_defaults`) and ignored during unmarshal.
 

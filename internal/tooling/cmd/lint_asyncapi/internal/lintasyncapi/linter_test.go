@@ -71,7 +71,7 @@ channels:
 		assert.Len(t, violations, 2)
 	})
 
-	t.Run("should resolve prefix correctly for deeply nested context paths", func(t *testing.T) {
+	t.Run("should resolve prefix correctly for deeply nested module paths", func(t *testing.T) {
 		fsys := fstest.MapFS{
 			"public/reservations/inventory/asyncapi.yaml": {Data: spec("public.reservations.inventory.example-event")},
 		}
