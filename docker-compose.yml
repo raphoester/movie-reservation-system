@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: movie-reservation-system/postgres:latest
+    build:
+      context: assets/docker/postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  dbcreator:
+    build:
+      context: .
+      dockerfile: internal/tooling/cmd/dbcreator/Dockerfile
+    environment:
+      ENVIRONMENT: docker
+      DB_NAME: __all__
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  migrator:
+    build:
+      context: .
+      dockerfile: internal/tooling/cmd/migrate/Dockerfile
+    environment:
+      ENVIRONMENT: docker
+      MIGRATIONS_DIR: __all__
+    depends_on:
+      dbcreator:
+        condition: service_completed_successfully
+    restart: "no"
+
+volumes:
+  postgres_data:

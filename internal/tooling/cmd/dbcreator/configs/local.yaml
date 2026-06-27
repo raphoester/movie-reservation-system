@@ -1,0 +1,9 @@
+# For running on the bare machine with `go run`.
+name: dbcreator
+version: "1.0.0"
+logger:
+  <<: *logger_defaults
+rootPostgres:
+  example_db:
+    <<: *local_postgres
+    dbName: postgres

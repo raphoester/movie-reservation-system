@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Capture staged files before any formatting so we can re-stage only what
+# was already in the index — never accidentally stage unintended changes.
+STAGED_FILES=$(git diff --name-only --cached --diff-filter=ACM -- '*.go' 'go.mod' 'go.sum' || true)
+
+echo "pre-commit: running make tidy..."
+make tidy
+
+# Re-stage files that tidy may have reformatted in-place.
+if [ -n "$STAGED_FILES" ]; then
+    echo "$STAGED_FILES" | xargs git add --
+fi
+
+echo "pre-commit: running make test-format..."
+make test-format
+
+echo "pre-commit: running make lint-ci..."
+make lint-ci
+
+echo "pre-commit: all checks passed."

@@ -1,0 +1,24 @@
+_logger_defaults: &logger_defaults
+  level: debug
+
+# Accessing postgres from inside the docker compose network.
+_internal_docker_postgres: &internal_docker_postgres
+  host: postgres
+  port: "5432"
+  user: postgres
+  password: postgres
+  dbName: postgres
+  sslMode: disable
+
+_example_db_postgres: &example_db_postgres
+  host: postgres
+  port: "5432"
+  user: postgres
+  password: postgres
+  dbName: example_db
+  sslMode: disable
+
+_cache: &cache
+  protocol: tcp
+  host: redis
+  port: 6379

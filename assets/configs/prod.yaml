@@ -1,0 +1,26 @@
+_logger_defaults: &logger_defaults
+  level: info
+
+# Replace the host with your managed database endpoint for this environment.
+# Confidential values use the awssm:// prefix and are resolved from AWS Secrets Manager.
+_postgres: &postgres
+  host: postgres.prod.example.com
+  port: 5432
+  sslMode: require
+  user: awssm://example-db/PRODsername
+  password: awssm://example-db/prod:password
+  pool:
+    maxOpenConns: 25
+    maxIdleConns: 5
+    connMaxLifetime: 30m
+    connMaxIdleTime: 10m
+
+_example_db_postgres: &example_db_postgres
+  <<: *postgres
+  dbName: example_db
+
+_cache: &cache
+  protocol: tcp
+  host: cache.prod.example.com
+  port: 6379
+  tls: true

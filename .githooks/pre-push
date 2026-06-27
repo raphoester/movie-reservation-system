@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ─────────────────────────────────────────────
+# Pre-push checks
+# Add make targets to PARALLEL_STEPS to run them concurrently.
+#
+# Note: `deadcode`, `check-orphans` and `verify-secrets-all` exist as manual
+# `make` targets but are intentionally NOT gated here — the first two are noisy
+# until the domain has services consuming every framework package, and the last
+# requires AWS credentials.
+# ─────────────────────────────────────────────
+PARALLEL_STEPS=(
+  test
+  testconfig-all
+)
+
+# ─────────────────────────────────────────────
+
+LOGDIR=$(mktemp -d)
+cleanup() { rm -rf "$LOGDIR"; }
+trap cleanup EXIT
+
+run_step() {
+  local name="$1"
+  local logfile="$LOGDIR/$name.log"
+
+  if make "$name" > "$logfile" 2>&1; then
+    echo "pre-push: ✓ $name passed"
+  else
+    echo "pre-push: ✗ $name failed — output:"
+    cat "$logfile"
+    return 1
+  fi
+}
+
+# ── Parallel steps ───────────────────────────
+PIDS=()
+for step in "${PARALLEL_STEPS[@]}"; do
+  echo "pre-push: starting $step..."
+  run_step "$step" &
+  PIDS+=($!)
+done
+
+FAILED=0
+for i in "${!PARALLEL_STEPS[@]}"; do
+  wait "${PIDS[$i]}" || FAILED=1
+done
+
+# ── Result ────────────────────────────────────
+if [ $FAILED -ne 0 ]; then
+  echo "pre-push: one or more checks failed."
+  exit 1
+fi
+
+echo "pre-push: all checks passed."

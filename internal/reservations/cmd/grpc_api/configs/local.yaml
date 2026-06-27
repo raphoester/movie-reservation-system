@@ -1,0 +1,7 @@
+name: reservations_grpc_api
+version: "1.0.0"
+logger:
+  <<: *logger_defaults
+server:
+  <<: *grpc_server_defaults
+  port: 50051

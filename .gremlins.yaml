@@ -1,0 +1,4 @@
+unleash:
+  output-statuses: "l"
+  exclude-files:
+    - "internal/shared/xtestc/" # contains arbitrary, non-testable numeric values

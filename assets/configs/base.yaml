@@ -1,0 +1,6 @@
+_http_server_defaults: &http_server_defaults
+  port: 3000
+
+_grpc_server_defaults: &grpc_server_defaults
+  port: 50051
+  reflection: true

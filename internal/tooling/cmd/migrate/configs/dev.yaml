@@ -1,0 +1,7 @@
+name: migrator
+version: "1.0.0"
+logger:
+  <<: *logger_defaults
+postgres:
+  example_db:
+    <<: *example_db_postgres

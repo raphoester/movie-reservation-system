@@ -1,0 +1,28 @@
+_logger_defaults: &logger_defaults
+  level: debug
+
+# Accessing postgres from inside the docker compose network (migrator, dbcreator).
+_internal_docker_postgres: &internal_docker_postgres
+  host: postgres
+  port: "5432"
+  user: postgres
+  password: postgres
+  dbName: postgres
+  sslMode: disable
+
+# Accessing the docker-mapped postgres from the bare machine (go run).
+_local_postgres: &local_postgres
+  host: localhost
+  port: "5432"
+  user: postgres
+  password: postgres
+  sslMode: disable
+
+_example_db_postgres: &example_db_postgres
+  <<: *local_postgres
+  dbName: example_db
+
+_cache: &cache
+  protocol: tcp
+  host: localhost
+  port: 6379

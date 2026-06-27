@@ -1,0 +1,9 @@
+# Runs inside docker compose. Connects to the maintenance "postgres" database
+# and creates each database listed under rootPostgres.
+name: dbcreator
+version: "1.0.0"
+logger:
+  <<: *logger_defaults
+rootPostgres:
+  example_db:
+    <<: *internal_docker_postgres

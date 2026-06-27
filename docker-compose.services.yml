@@ -1,0 +1,12 @@
+services:
+  reservations-grpc-api:
+    build:
+      context: .
+      dockerfile: internal/reservations/cmd/grpc_api/Dockerfile
+    environment:
+      ENVIRONMENT: docker
+    ports:
+      - "50051:50051"
+    depends_on:
+      migrator:
+        condition: service_completed_successfully

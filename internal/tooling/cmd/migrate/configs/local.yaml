@@ -1,0 +1,8 @@
+# For running on the bare machine with `go run`.
+name: migrator
+version: "1.0.0"
+logger:
+  <<: *logger_defaults
+postgres:
+  example_db:
+    <<: *example_db_postgres
